@@ -133,7 +133,7 @@ function loadLabeledImages() {
         labels.map(async(label) => {
             const descriptions = []
             for (let i = 1; i <= 2; i++) {
-                if (UrlExists(`../public/labeled_images/${label}/${i}.jpg`) == false) break;
+                if (UrlExists(`Online_Roll_Call/public/labeled_images/${label}/${i}.jpg`) == false) break;
                 const img = await faceapi.fetchImage(`../public/labeled_images/${label}/${i}.jpg`)
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
