@@ -111,7 +111,7 @@ $results = mysqli_query($mysqli, $sql);
                     <h5 class="card-title">攝影畫面</h5>
                     <p class="card-text" style="height: 500px;">
                         <img style="width: 90%; position:absolute" id="mjpeg_dest" />
-                        <canvas id="overlay"></canvas>
+                        <canvas style="position: absolute;" id="overlay"></canvas>
                         <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
                     <small class="text-muted">Last updated 3 mins ago</small>

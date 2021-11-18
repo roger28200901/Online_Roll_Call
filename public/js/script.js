@@ -11,9 +11,9 @@ Promise.all([
     // tinyFaceDetector 比Google的mobilenet更輕量級，速度更快一點
     // mtcnn  多工CNN演算法，一開瀏覽器就卡死
     // tinyYolov2 識別身體輪廓的演算法，不知道怎麼用
-    faceapi.nets.faceRecognitionNet.loadFromUri('public/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('public/models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('public/models') //heavier/accurate version of tiny face detector
+    faceapi.nets.faceRecognitionNet.loadFromUri('../public/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('../public/models'),
+    faceapi.nets.ssdMobilenetv1.loadFromUri('../public/models') //heavier/accurate version of tiny face detector
     // faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
     // faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
     // faceapi.nets.faceLandmark68TinyNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'),
@@ -56,6 +56,9 @@ async function recognizeFaces() {
 
     const canvas = document.getElementById('overlay')
 
+    document.body.append(canvas)
+
+
 
     const displaySize = { width: input.width, height: input.height }
     faceapi.matchDimensions(canvas, displaySize)
@@ -65,7 +68,7 @@ async function recognizeFaces() {
     console.log(labeledDescriptors)
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
 
-    setTimeout(async() => {
+    setInterval(async() => {
         const detections = await faceapi.detectAllFaces(input).withFaceLandmarks().withFaceDescriptors()
 
         // resize the detected boxes in case your displayed image has a different size then the original
@@ -88,6 +91,9 @@ async function recognizeFaces() {
         })
 
     }, 100)
+
+
+
 
     // video.addEventListener('play', async() => {
     //     console.log('Playing')
@@ -133,7 +139,7 @@ function loadLabeledImages() {
         labels.map(async(label) => {
             const descriptions = []
             for (let i = 1; i <= 2; i++) {
-                if (UrlExists(`Online_Roll_Call/public/labeled_images/${label}/${i}.jpg`) == false) break;
+                if (UrlExists(`../public/labeled_images/${label}/${i}.jpg`) == false) break;
                 const img = await faceapi.fetchImage(`../public/labeled_images/${label}/${i}.jpg`)
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
