@@ -26,9 +26,12 @@ $results = mysqli_query($mysqli, $sql);
     <script src="js/jquery.js"></script>
     <!-- <script src="js/popper.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
+
+    <!-- This is for Camera -->
+    <script src="script_min.js"></script>
 </head>
 
-<body>
+<body onload="setTimeout('init();', 100);">
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar">
@@ -107,7 +110,8 @@ $results = mysqli_query($mysqli, $sql);
                 <div class="card-body">
                     <h5 class="card-title">攝影畫面</h5>
                     <p class="card-text" style="height: 500px;">
-                        <img id="stream" src="image.png" width="500" height="500" alt="">
+                        <img id="mjpeg_dest" />
+                        <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
                     <small class="text-muted">Last updated 3 mins ago</small>
                 </div>
