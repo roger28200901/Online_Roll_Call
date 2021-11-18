@@ -1,5 +1,28 @@
 const video = document.getElementById('videoInput')
+var mjpeg_img;
 
+function reload_img() {
+    console.log('reload_img');
+    mjpeg_img.src = "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime();
+}
+
+function error_img() {
+    console.log('error_img')
+    setTimeout("mjpeg_img.src = 'http://172.20.10.2/cam_pic.php?time=' + new Date().getTime();", 100);
+}
+
+function refreshStream() {
+    $('#mjpeg_dest').attr('src', "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime());
+}
+
+function init() {
+    console.log('init')
+    mjpeg_img = document.getElementById("mjpeg_dest");
+    setInterval(refreshStream, 100);
+    // mjpeg_img.onload = reload_img;
+    // mjpeg_img.onerror = error_img;
+    // reload_img();
+}
 Promise.all([
     //載入訓練好的模型（weight，bias）
     // ageGenderNet 識別性別和年齡
@@ -56,7 +79,6 @@ async function recognizeFaces() {
 
     const canvas = document.getElementById('overlay')
 
-    document.body.append(canvas)
 
 
 
