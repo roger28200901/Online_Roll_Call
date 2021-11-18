@@ -37,171 +37,167 @@ a[data-toggle="collapse"] {
     #sidebar {
         margin-left: -500px;
     }
-
     #sidebar.active {
         margin-left: 0;
     }
 }
+
 
 /*
 ADDITIONAL DEMO STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
 */
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
 
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+}
 
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+    transition: all 0.3s;
+    color: gray;
+}
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: #fafafa;
-    }
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #D0D0D0;
+    transition: all 0.3s;
+    overflow-y: scroll;
+}
 
-    p {
-        font-family: 'Poppins', sans-serif;
-        font-size: 1.1em;
-        font-weight: 300;
-        line-height: 1.7em;
-    }
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: gray;
+}
 
-    a,
-    a:hover,
-    a:focus {
-        text-decoration: none;
-        transition: all 0.3s;
-        color: gray;
-    }
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
 
-    #sidebar {
-        /* don't forget to add all the previously mentioned styles here too */
-        background: #D0D0D0;
-        transition: all 0.3s;
-        overflow-y: scroll;
-    }
+#sidebar ul p {
+    padding: 10px;
+}
 
-    #sidebar .sidebar-header {
-        padding: 20px;
-        background: gray;
-    }
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
 
-    #sidebar ul.components {
-        padding: 20px 0;
-        border-bottom: 1px solid #47748b;
-    }
+#sidebar ul li a:hover {
+    background: #fff;
+}
 
-    #sidebar ul p {
-        padding: 10px;
-    }
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    background: #6d7fcc;
+}
 
-    #sidebar ul li a {
-        padding: 10px;
-        font-size: 1.1em;
-        display: block;
-    }
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
 
-    #sidebar ul li a:hover {
-        background: #fff;
-    }
+.flex {
+    display: flex;
+}
 
-    #sidebar ul li.active>a,
-    a[aria-expanded="true"] {
-        background: #6d7fcc;
-    }
+.vertical-center {
+    align-items: center;
+}
 
-    ul ul a {
-        font-size: 0.9em !important;
-        padding-left: 30px !important;
-        background: #6d7fcc;
-    }
+.horizontal-center {
+    justify-content: center;
+}
 
-    .flex {
-        display: flex;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    .vertical-center {
-        align-items: center;
-    }
+.grid-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-    .horizontal-center {
-        justify-content: center;
-    }
+.grid-wrapper .grid-item {
+    width: 25%;
+    text-align: left;
+    padding: 5px;
+    flex-grow: 1;
+}
 
-    * {
-        box-sizing: border-box;
+.grid-item:hover {
+    opacity: .7;
+    cursor: pointer;
+}
 
-    }
+.grid-wrapper .grid-item:nth-child(n) {
+    width: calc(100%);
+    flex-grow: 0;
+}
 
-    .grid-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+.grid-item {
+    background: white;
+    margin-top: 1em;
+}
 
-    .grid-wrapper .grid-item {
-        width: 25%;
-        text-align: left;
-        padding: 5px;
-        flex-grow: 1;
-    }
+p {
+    background: #ddd;
+    padding: 15px;
+}
 
-    .grid-item:hover {
-        opacity: .7;
-        cursor: pointer;
-    }
+.user {
+    margin: 10px;
+    margin-left: 20px;
+    font-size: 72px;
+    /* width: 100%; */
+}
 
-    .grid-wrapper .grid-item:nth-child(n) {
-        width: calc(100%);
-        flex-grow: 0;
-    }
+span {
+    text-align: left;
+    font-size: 12px;
+    display: block;
+    word-break: normal;
+    word-wrap: break-word;
+}
 
-    .grid-item {
-        background: white;
-        margin-top: 1em;
-    }
+.information {
+    margin-left: 1em;
+    padding: 1em;
+}
 
-    p {
-        background: #ddd;
-        padding: 15px;
-    }
+#content {
+    display: flex;
+    align-items: center;
+    width: 55%;
+    margin-left: 4%;
+}
 
-    .user {
-        margin: 10px;
-        margin-left: 20px;
-        font-size: 72px;
-        /* width: 100%; */
-    }
+#video {
+    width: 100%;
+}
 
-    span {
-        text-align: left;
-        font-size: 12px;
-        display: block;
-        word-break: normal;
-        word-wrap: break-word;
-    }
+.block {
+    display: block;
+}
 
-    .information {
-        margin-left: 1em;
-        padding: 1em;
-    }
+#right-information {
+    width: 15%;
+}
 
-    #content {
-        display: flex;
-        align-items: center;
-        width: 55%;
-        margin-left: 4%;
-    }
-
-    #video {
-        width: 100%;
-    }
-
-    .block {
-        display: block;
-    }
-
-    img {
-        border-radius: 50%;
-    }
-
-    #right-information {
-        width: 15%;
-    }
+canvas {
+    position: absolute;
+}

@@ -110,7 +110,8 @@ $results = mysqli_query($mysqli, $sql);
                 <div class="card-body">
                     <h5 class="card-title">攝影畫面</h5>
                     <p class="card-text" style="height: 500px;">
-                        <img id="mjpeg_dest" />
+                        <img style="width: 90%; position:absolute" id="mjpeg_dest" />
+                        <canvas id="overlay"></canvas>
                         <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
                     <small class="text-muted">Last updated 3 mins ago</small>
@@ -162,5 +163,7 @@ $results = mysqli_query($mysqli, $sql);
         //TODO: For Camera Area
     });
 </script>
+<script defer src="public/js/face-api.min.js"></script>
+<script defer src="public/js/script.js"></script>
 
 </html>
