@@ -166,7 +166,7 @@ function loadLabeledImages() {
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
             }
-            document.body.append(label + ' Faces Loaded | ')
+            // document.body.append(label + ' Faces Loaded | ')
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
     )

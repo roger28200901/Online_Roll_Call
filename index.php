@@ -1,5 +1,8 @@
 <?php
 include('connection.php');
+if ($_SESSION['login'] == false) {
+    header("Location:index.php");
+}
 $sql = "SELECT * FROM `users`";
 $results = mysqli_query($mysqli, $sql);
 ?>
@@ -39,6 +42,8 @@ $results = mysqli_query($mysqli, $sql);
                 <h1 style="letter-spacing: 3px; color:white">簽到狀態</h1>
 
                 <h3 style="letter-spacing: 3px; color:white"> 班級 ｜ 互動三</h3>
+                <input type="button" value="返回後台管理" class="btn btn-success" onclick="location.href='backend.php'">
+
             </div>
 
             <div class="container">
