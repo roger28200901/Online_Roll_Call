@@ -1,3 +1,9 @@
+<?php
+include("connection.php");
+$sql = "select * from `rollcalls`";
+$results = mysqli_query($mysqli, $sql);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 
     <!-- Our project just needs Font Awesome solid + brand -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <script defer src="js/brands.js"></script>
     <script defer src="js/solid.js"></script>
     <script defer src="js/fontawesome.js"></script>
@@ -99,16 +106,24 @@
 
     .day {
         font-size: 36pt;
-        overflow: auto;
         color: #98FFA2;
         padding-left: 5%;
         font-weight: 100;
+
     }
 
     .arrow {
         position: relative;
         left: 70%;
         top: 30%;
+    }
+
+
+    input {
+        background: #c4c4cc;
+        border: none;
+        border-radius: 5px;
+        height: 20px;
     }
 </style>
 
@@ -119,44 +134,68 @@
         <img src="images/NEW CHECKROLL.png" id="new_checkroll" alt="">
     </div>
     <div id="wrapper">
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
-        <div class="order_card">
-            <h1 class="day">2021/11/21</h1>
-            <img class="arrow" src="images/Arrow 1.png" alt="">
-        </div>
+
+        <?php
+        while ($row = mysqli_fetch_array($results)) {
+        ?>
+            <div class="order_card" rollcall-id="<?= $row['id'] ?>">
+                <h1 class="day"><?= $row['date']; ?></h1>
+                <h2 class="day"><?= $row['class_name'] ?></h2>
+                <img class="arrow" src="images/Arrow 1.png" alt="">
+            </div>
+        <?php
+        }
+        ?>
 
     </div>
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="add_modal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">新增點名單</h5>
+
+                </div>
+                <form action="rollcall_insert.php" method="POST">
+                    <div class="modal-body">
+                        <p>
+                            <label for="">Class:</label>
+                            <input type="text" name="class_name">
+                        </p>
+                        <p>
+                            <label for="">Date:</label>
+                            <input type="date" name="date">
+                        </p>
+                        <p>
+                            <label for="">Time Setting:</label>
+                        </p>
+                        <p>
+                            <input type="text" name="time" placeholder="roll call time ex: 13:10">
+                            <input type="text" name="delay" placeholder="late time ex: 15(mins)">
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Create</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#btn_add').on('click', function() {
+            $('#add_modal').modal('show');
+        })
+
+        $('.order_card').on('click', function() {
+            let id = $(this).attr('rollcall-id');
+            location.href = 'index.php?id=' + id
+        })
+    })
+</script>
 
 </html>

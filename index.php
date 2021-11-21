@@ -1,10 +1,28 @@
 <?php
 include('connection.php');
 if ($_SESSION['login'] == false) {
-    header("Location:index.php");
+    header("Location:login.php");
 }
-$sql = "SELECT * FROM `users`";
-$results = mysqli_query($mysqli, $sql);
+$id = $_GET['id'];
+$sql = "SELECT * FROM `rollcalls` WHERE `id` = $id";
+
+// $sql = "SELECT * FROM `students`";
+
+$result = mysqli_query($mysqli, $sql);
+
+$row = mysqli_fetch_array($result);
+$now = date('Y/m/d H:i:s');
+$rollcall_time = $row['date'] . " " . $row['time'];
+$rollcall_time_plus_delay = date("Y-m-d H:i", strtotime($rollcall_time . '+' . $row['delay'] . 'minute'));
+//如果現在時間還沒到點名時間 則不會啟動點名的功能
+$rollcall_function = false;
+if (strtotime($now) < strtotime($rollcall_time)) {
+    $rollcall_function = false;
+} else if (strtotime($now) - strtotime($rollcall_time_plus_delay)) {  // 如果今天超過遲到的時間 則也不算啟動
+    $rollcall_function = false;
+} else {
+    $rollcall_function = true;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +53,8 @@ $results = mysqli_query($mysqli, $sql);
 </head>
 
 <body onload="setTimeout('init();', 100);">
+    <input type="hidden" name="rollcall_time" value="<?= $rollcall_time ?>">
+    <input type="hidden" name="rollcall_time_plus_delay" value="<?= $rollcall_time_plus_delay ?>">
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar">
@@ -47,29 +67,31 @@ $results = mysqli_query($mysqli, $sql);
             </div>
 
             <div class="container">
-                <div class="grid-wrapper">
+                <div class="grid-wrapper" id="left_container">
                     <?php
-                    while ($row = mysqli_fetch_assoc($results)) {
+                    $sql2 = "SELECT * FROM `students` WHERE `time` LIKE '%$row[date]%'";
+                    $results = mysqli_query($mysqli, $sql2);
+                    while ($row2 = mysqli_fetch_assoc($results)) {
                         # code...
                     ?>
                         <div class="grid-item">
                             <div class="flex">
                                 <?php
-                                if (isset($row['image'])) {
+                                if (isset($row2['image'])) {
                                     echo `<img src="test.jpeg" class="user " width="75" height="75" alt="">`;
                                 } else {
-                                    echo '<img src="test.jpeg" style="border:4px solid orange; border-radius:50%;"  class="user " width="75" height="75" alt="">';
-                                    // echo '<i style="border:2px solid green; border-radius:50%;" class="user fas fa-user-circle"></i>';
+                                    // echo '<img src="test.jpeg" style="border:4px solid orange; border-radius:50%;"  class="user " width="75" height="75" alt="">';
+                                    echo '<i class="user fas fa-user-circle"></i>';
                                 }
                                 ?>
 
                                 <!-- <img src="test.jpeg" class="user " width="75" height="75" alt=""> -->
                                 <!-- <i class="user fas fa-user-circle"></i> -->
                                 <div class="information">
-                                    <span>姓名:<?= $row['name'] ?></span>
-                                    <span>學號:<?= $row['school_number'] ?></span>
-                                    <span>簽到時間:2020/11/16 10:40:30</span>
-                                    <span class="text-success">狀態：簽到成功</span>
+                                    <span>姓名:<?= $row2['name'] ?></span>
+                                    <span>學號:<?= $row2['school_number'] ?></span>
+                                    <span>簽到時間:<?= $row2['time'] ?></span>
+                                    <span class="<?= $row['status'] == '辨識成功' ? 'text-success' : 'text-danger' ?>">狀態：<?= $row2['status'] ?></span>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +99,7 @@ $results = mysqli_query($mysqli, $sql);
                     }
                     ?>
 
-                    <div class="grid-item">
+                    <!-- <div class="grid-item">
                         <div class="flex">
                             <i class="user fas fa-user-circle"></i>
                             <div class="information">
@@ -98,7 +120,7 @@ $results = mysqli_query($mysqli, $sql);
                                 <span class="text-warning">狀態：簽到遲到</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </nav>
@@ -116,7 +138,7 @@ $results = mysqli_query($mysqli, $sql);
                     <h5 class="card-title">攝影畫面</h5>
                     <p class="card-text" style="height: 500px;">
                         <!-- <img style="width: 90%; position:absolute" id="mjpeg_dest" crossorigin='anonymous' /> -->
-                        <img style="width: 90%; position:absolute" id="mjpeg_dest" src="public/labeled_images/Chen Yun Hong/1.jpg" crossorigin='anonymous' />
+                        <img style="width: 90%; position:absolute" id="mjpeg_dest" crossorigin='anonymous' />
                         <canvas style="position: absolute;" id="overlay">test</canvas>
                         <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
@@ -153,8 +175,28 @@ $results = mysqli_query($mysqli, $sql);
                     url: 'update.php',
                     type: 'GET',
                     dataType: 'json',
-                    success: function(response) {
-                        console.log(response)
+                    data: {
+                        "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
+                    },
+                    success: function(responses) {
+                        $('#left_container').empty();
+                        responses.forEach(function(response) {
+
+                            let tag = `
+                            <div class="grid-item">
+                                <div class="flex">
+                                    <i class="user fas fa-user-circle"></i>
+                                    <div class="information">
+                                        <span>姓名:${response.name}</span>
+                                        <span>學號:${response.school_number}</span>
+                                        <span>簽到時間:${response.time}</span>
+                                        <span class="${response.status == '準時' ? 'text-success' : 'text-danger'}">狀態：${response.status}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            `
+                            $('#left_container').append(tag);
+                        })
                     }
                 })
             },
@@ -169,7 +211,7 @@ $results = mysqli_query($mysqli, $sql);
         //TODO: For Camera Area
     });
 </script>
-<script defer src="public/js/face-api.min.js"></script>
+<script src="public/js/face-api.min.js"></script>
 <script defer src="public/js/script.js"></script>
 
 </html>
