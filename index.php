@@ -155,7 +155,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                 <span style="text-align: right;" id="count_people">目前已到人數:<?= $count_people ?>人</span>
             </div>
         </div>
-        <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+        <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" data-dismiss="modal" aria-labelledby="loadMeLabel">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center">

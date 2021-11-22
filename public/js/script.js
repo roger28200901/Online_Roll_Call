@@ -41,6 +41,11 @@ function refreshStream() {
 
 function init() {
     console.log('init')
+    $('#loadMe').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+    $('#loadMe').modal('show')
 
     // json
     // $.getJSON('users.json', function(json) {
@@ -231,7 +236,6 @@ async function recognizeFaces() {
 
 function loadLabeledImages() {
     // const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
-    $('#loadMe').modal('show')
     return Promise.all(
         labels.map(async(label, index) => {
             const descriptions = []
