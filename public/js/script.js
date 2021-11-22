@@ -135,7 +135,7 @@ async function recognizeFaces() {
 
             persons.forEach(function(person) {
                 if (person.name == result.label) person.count += 1
-                if (person.count == 10) {
+                if (person.count == 20) {
                     let now = new Date();
 
                     if (now.getTime() >= rollcall_time.getTime() && now.getTime() <= rollcall_time_plus_delay.getTime()) {
@@ -159,7 +159,9 @@ async function recognizeFaces() {
                     })
                 }
             })
-
+            persons.forEach(function(person) {
+                person.count = 0;
+            })
             const box = resizedDetections[i].detection.box
             const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
             drawBox.draw(canvas)
