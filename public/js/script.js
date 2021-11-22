@@ -125,7 +125,7 @@ async function recognizeFaces() {
     const labeledDescriptors = await loadLabeledImages()
     $('#loadMe').modal('hide')
     console.log(labeledDescriptors)
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
+    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6)
 
     setInterval(async() => {
         const options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.38 })
@@ -170,7 +170,7 @@ async function recognizeFaces() {
                         success: function(response) {
                             console.log(response)
                             person.count = 0;
-                                
+                            let count = 0;
                             $.ajax({
                                     url: 'update.php',
                                     type: 'GET',
@@ -180,7 +180,8 @@ async function recognizeFaces() {
                                     },
                                     success: function(responses) {
                                         $('#left_container').empty();
-                                        responses.forEach(function(response) {            
+                                        responses.forEach(function(response) {  
+                                            count +=1;          
                                             let tag = `
                                                     <div class="grid-item">
                                                         <div class="flex">
@@ -196,6 +197,7 @@ async function recognizeFaces() {
                                                     `
                                             $('#left_container').append(tag);
                                         })
+                                        $('#count_people').html('目前已到人數:' + count +'人')
                                     }
                             })
                         }

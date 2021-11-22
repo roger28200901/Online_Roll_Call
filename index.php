@@ -71,6 +71,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                     <?php
                     $sql2 = "SELECT * FROM `students` WHERE `time` LIKE '%$row[date]%'";
                     $results = mysqli_query($mysqli, $sql2);
+                    $count_people = mysqli_num_rows($results);
                     while ($row2 = mysqli_fetch_assoc($results)) {
                         # code...
                     ?>
@@ -142,15 +143,15 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                         <canvas style="position: absolute;" id="overlay">test</canvas>
                         <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
-                    <small class="text-muted">Last updated 3 mins ago</small>
+                    <small class="text-muted">Author: Chen Yun Hong</small>
                 </div>
             </div>
         </div>
         <div id="right-information">
             <h4 style="text-align: center; margin:15%; color:gray; border:1px solid black; padding:10%; border-radius:50%; background:white">線上簽到</h4>
-            <div style="bottom: 0; right:0; position:absolute; margin-bottom:5%; margin-right:5%;" hidden>
-                <span style="text-align: right;">全班人數:80人</span>
-                <span style="text-align: right;">目前已到人數:20人</span>
+            <div style="bottom: 0; right:0; position:absolute; margin-bottom:5%; margin-right:5%;">
+                <span style="text-align: right;">全班人數:82人</span>
+                <span style="text-align: right;" id="count_people">目前已到人數:<?= $count_people ?>人</span>
             </div>
         </div>
         <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
