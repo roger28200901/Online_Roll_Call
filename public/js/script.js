@@ -125,7 +125,7 @@ async function recognizeFaces() {
     const labeledDescriptors = await loadLabeledImages()
     $('#loadMe').modal('hide')
     console.log(labeledDescriptors)
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.3)
+    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
 
     setInterval(async() => {
         const options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.38 })
@@ -174,9 +174,7 @@ async function recognizeFaces() {
                     })
                 }
             })
-            persons.forEach(function(person) {
-                person.count = 0;
-            })
+            
             const box = resizedDetections[i].detection.box
             const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
             drawBox.draw(canvas)
