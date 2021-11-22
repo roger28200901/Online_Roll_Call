@@ -53,6 +53,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
 </head>
 
 <body onload="setTimeout('init();', 100);">
+    <input type="hidden" name="rollcall_id" value="<?= $id ?>">
     <input type="hidden" name="rollcall_time" value="<?= $rollcall_time ?>">
     <input type="hidden" name="rollcall_time_plus_delay" value="<?= $rollcall_time_plus_delay ?>">
     <div class="wrapper">
@@ -69,7 +70,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
             <div class="container">
                 <div class="grid-wrapper" id="left_container">
                     <?php
-                    $sql2 = "SELECT * FROM `students` WHERE `time` LIKE '%$row[date]%'";
+                    $sql2 = "SELECT * FROM `students` WHERE `rollcall_id` = $id";
                     $results = mysqli_query($mysqli, $sql2);
                     $count_people = mysqli_num_rows($results);
                     while ($row2 = mysqli_fetch_assoc($results)) {

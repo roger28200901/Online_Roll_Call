@@ -50,14 +50,14 @@ function init() {
     // })
     $.ajax({
         url: 'get_model_list.php',
-        method:'GET',
+        method: 'GET',
         success: function(responses) {
-            let json = JSON.parse( responses)
+            let json = JSON.parse(responses)
             json.forEach(function(response) {
                 labels.push(response.name);
                 let person = {
-                    "name" : response.name,
-                    "count" : 0
+                    "name": response.name,
+                    "count": 0
                 }
                 persons.push(person)
             })
@@ -71,7 +71,7 @@ function init() {
             json.forEach(function(object) {
                 labelsFiles.push(object)
             })
-            console.log(labels,labelsFiles)
+            console.log(labels, labelsFiles)
 
         }
     })
@@ -154,10 +154,10 @@ async function recognizeFaces() {
         canvas.width = input.width
         canvas.height = input.height
             // faceapi.drawDetection(canvas, resizedDetections, { withScore: true })
-        // console.log(resizedDetections);
+            // console.log(resizedDetections);
         const results = resizedDetections.map((d) => {
-                return faceMatcher.findBestMatch(d.descriptor)
-            })
+            return faceMatcher.findBestMatch(d.descriptor)
+        })
 
         results.forEach((result, i) => {
 
@@ -173,29 +173,31 @@ async function recognizeFaces() {
                     }
                     console.log(person.count)
                     console.log(status)
+                    let rollcall_id = $('[name=rollcall_id]').val()
                     $.ajax({
                         url: 'insert_detect.php',
                         method: 'POST',
                         data: {
                             "name": person.name,
                             "status": status,
+                            "rollcall_id": rollcall_id
                         },
                         success: function(response) {
                             console.log(response)
                             person.count = 0;
                             let count = 0;
                             $.ajax({
-                                    url: 'update.php',
-                                    type: 'GET',
-                                    dataType: 'json',
-                                    data: {
-                                        "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
-                                    },
-                                    success: function(responses) {
-                                        $('#left_container').empty();
-                                        responses.forEach(function(response) {  
-                                            count +=1;          
-                                            let tag = `
+                                url: 'update.php',
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {
+                                    "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
+                                },
+                                success: function(responses) {
+                                    $('#left_container').empty();
+                                    responses.forEach(function(response) {
+                                        count += 1;
+                                        let tag = `
                                                     <div class="grid-item">
                                                         <div class="flex">
                                                             <i class="user fas fa-user-circle"></i>
@@ -208,16 +210,16 @@ async function recognizeFaces() {
                                                         </div>
                                                     </div>
                                                     `
-                                            $('#left_container').append(tag);
-                                        })
-                                        $('#count_people').html('目前已到人數:' + count +'人')
-                                    }
+                                        $('#left_container').append(tag);
+                                    })
+                                    $('#count_people').html('目前已到人數:' + count + '人')
+                                }
                             })
                         }
                     })
                 }
             })
-            
+
             const box = resizedDetections[i].detection.box
             const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
             drawBox.draw(canvas)
@@ -231,10 +233,10 @@ function loadLabeledImages() {
     // const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
     $('#loadMe').modal('show')
     return Promise.all(
-        labels.map(async(label,index) => {
+        labels.map(async(label, index) => {
             const descriptions = []
-            // console.log(index)
-            
+                // console.log(index)
+
             // labelsFiles.forEach(function (item) {
             //     if (item.name == label) {
             //         item.images.forEach(element => {
@@ -247,9 +249,9 @@ function loadLabeledImages() {
             //         });
             //     }                
             // })
-            for(let i = 0; i< labelsFiles.length; i++) {
+            for (let i = 0; i < labelsFiles.length; i++) {
                 if (labelsFiles[i].name == label) {
-                    for (let j =0 ; j< labelsFiles[i].images.length; j++) {
+                    for (let j = 0; j < labelsFiles[i].images.length; j++) {
                         const img = await faceapi.fetchImage(`public/labeled_images/${label}/${labelsFiles[i].images[j]}`)
                         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                         descriptions.push(detections.descriptor)

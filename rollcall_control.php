@@ -53,8 +53,8 @@ $results = mysqli_query($mysqli, $sql);
                         <td><?= $row['time'] ?></td>
                         <td><?= $row['delay'] ?></td>
                         <td>
-                            <input type="button" value="查看內容" class="btn btn-primary">
-                            <input type="button" value="刪除" class="btn btn-danger">
+                            <input type="button" onclick="location.href='rollcall_list.php?id=<?= $row['id'] ?>'" value="查看內容" class="btn btn-primary">
+                            <input type="button" onclick="deleteItem(<?= $row['id'] ?>)" value="刪除" class="btn btn-danger">
                         </td>
                     </tr>
                 <?php
@@ -64,5 +64,20 @@ $results = mysqli_query($mysqli, $sql);
         </table>
     </center>
 </body>
+<script>
+    function deleteItem(id) {
+        if (confirm("確認是否刪除")) {
+            $.ajax({
+                url: 'delete_rollcall.php',
+                data: {
+                    "id": id,
+                },
+                success: function(response) {
+                    location.reload()
+                }
+            })
+        }
+    }
+</script>
 
 </html>
