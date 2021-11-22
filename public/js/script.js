@@ -5,7 +5,7 @@ const video = document.getElementById('videoInput')
 let rollcall_time = new Date($('[name=rollcall_time]').val())
 let rollcall_time_plus_delay = new Date($('[name=rollcall_time_plus_delay]').val())
 var mjpeg_img;
-var labels = [] // for WebCam
+// var labels = [] // for WebCam
 
 
 function reload_img() {
@@ -25,11 +25,11 @@ function init() {
     console.log('init')
 
     // json
-    $.getJSON('users.json', function(json) {
-        json.forEach(function(student) {
-            labels.push(student.name)
-        })
-    })
+    // $.getJSON('users.json', function(json) {
+    //     json.forEach(function(student) {
+    //         labels.push(student.name)
+    //     })
+    // })
     mjpeg_img = document.getElementById("mjpeg_dest");
     // setTimeout(refreshStream, 150);
     // mjpeg_img.onload = refreshStream;
@@ -239,7 +239,7 @@ async function recognizeFaces() {
 
 function loadLabeledImages() {
     //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
-
+    const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
     return Promise.all(
         labels.map(async(label) => {
             const descriptions = []

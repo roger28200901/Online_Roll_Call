@@ -176,7 +176,7 @@ $results = mysqli_query($mysqli, $sql);
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="close_modal" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" data-dismiss="modal">Create</button>
                     </div>
                 </form>
@@ -194,6 +194,9 @@ $results = mysqli_query($mysqli, $sql);
         $('.order_card').on('click', function() {
             let id = $(this).attr('rollcall-id');
             location.href = 'index.php?id=' + id
+        })
+        $('#close_modal').on('click', function() {
+            $('#add_modal').modal('hide');
         })
     })
 </script>
