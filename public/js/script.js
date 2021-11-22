@@ -74,37 +74,28 @@ Promise.all([
 
 function start() {
     document.body.append('Models Loaded')
-
-    // navigator.getUserMedia({ video: {} },
-    //     stream => video.srcObject = stream,
-    //     err => console.error(err)
-    // )
-
-
-    // var constraints = { audio: true, video: true }; 
-
-    // navigator.mediaDevices.getUserMedia(constraints)
-    // .then(function(mediaStream) {
-    //   var video = document.querySelector('video');
-    //   video.srcObject = mediaStream;
-    //   video.onloadedmetadata = function(e) {
-    //     video.play();
-    //   };
-    // })
-    // .catch(function(err) { console.log(err.name + ": " + err.message); });
-
-
-    //video.src = '../videos/speech.mp4'
-    // console.log('video added')
-
-
     recognizeFaces()
 }
 
-var persons = [{
-    "name": "陳昀鴻",
-    "count": 0,
-}]
+var persons = [
+    {
+        "name": "陳昀鴻",
+        "count": 0,
+    },
+    {
+        "name":"郭芝玲",
+        "count" : 0,
+    },
+    {
+        "name": "李佩佳",
+        "count" : 0
+    },
+    {
+        "name": "李佳霖",
+        "count" : 0
+    }
+
+]
 
 
 async function recognizeFaces() {
@@ -112,9 +103,6 @@ async function recognizeFaces() {
     const input = document.getElementById('mjpeg_dest')
 
     const canvas = document.getElementById('overlay')
-
-
-
 
     const displaySize = { width: input.width, height: input.height }
     faceapi.matchDimensions(canvas, displaySize)
@@ -138,28 +126,10 @@ async function recognizeFaces() {
         canvas.width = input.width
         canvas.height = input.height
             // faceapi.drawDetection(canvas, resizedDetections, { withScore: true })
-        console.log(resizedDetections);
+        // console.log(resizedDetections);
         const results = resizedDetections.map((d) => {
                 return faceMatcher.findBestMatch(d.descriptor)
             })
-            // const sortAsc = (a, b) => a - b
-
-        // const results = resizedDetections.map((fd, i) => {
-        //     const bestMatch = labeledDescriptors.map(
-        //         refDesc => ({
-        //             label: labels[i],
-        //             distance: faceapi.euclideanDistance(fd.descriptor, refDesc)
-        //         })
-        //     ).sort(sortAsc)[0]
-
-        //     return {
-        //         detection: fd.detection,
-        //         label: bestMatch.label,
-        //         distance: bestMatch.distance
-        //     }
-        // })
-
-        console.log(results)
 
         results.forEach((result, i) => {
 
@@ -197,62 +167,14 @@ async function recognizeFaces() {
 
     }, 100)
 
-
-
-
-    // video.addEventListener('play', async() => {
-    //     console.log('Playing')
-
-
-
-    // const canvas = faceapi.createCanvasFromMedia(video)
-    // document.body.append(canvas)
-
-    // const displaySize = { width: video.width, height: video.height }
-    // faceapi.matchDimensions(canvas, displaySize)
-
-
-
-    // setInterval(async() => {
-    //     const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
-
-    //     const resizedDetections = faceapi.resizeResults(detections, displaySize)
-
-    //     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-
-    //     const results = resizedDetections.map((d) => {
-    //         return faceMatcher.findBestMatch(d.descriptor)
-    //     })
-    //     console.log(results)
-    //     results.forEach((result, i) => {
-    //         const box = resizedDetections[i].detection.box
-    //         const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
-    //         drawBox.draw(canvas)
-    //     })
-    // }, 100)
-
-
-
-    // })
 }
 
-
 function loadLabeledImages() {
-    //const labels = ['Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
     const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
     return Promise.all(
         labels.map(async(label) => {
             const descriptions = []
             for (let i = 1; i <= 2; i++) {
-                // $.get(`public/labeled_images/${label}/`)
-                //     .done(function() {
-                //         // exists code 
-                //         console.log(label + "存在")
-                //     }).fail(function() {
-                //         // not exists code
-                //         console.log("不存在")
-                //     })
-
                 if (UrlExists(`public/labeled_images/${label}/${i}.jpg`) == false) break;
                 const img = await faceapi.fetchImage(`public/labeled_images/${label}/${i}.jpg`)
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
