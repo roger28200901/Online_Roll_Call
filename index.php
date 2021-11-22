@@ -91,7 +91,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                                     <span>姓名:<?= $row2['name'] ?></span>
                                     <span>學號:<?= $row2['school_number'] ?></span>
                                     <span>簽到時間:<?= $row2['time'] ?></span>
-                                    <span class="<?= $row['status'] == '辨識成功' ? 'text-success' : 'text-danger' ?>">狀態：<?= $row2['status'] ?></span>
+                                    <span class="<?= $row['status'] == '準時' ? 'text-success' : 'text-danger' ?>">狀態：<?= $row2['status'] ?></span>
                                 </div>
                             </div>
                         </div>
@@ -190,37 +190,37 @@ if (strtotime($now) < strtotime($rollcall_time)) {
             }
         });
 
-        setInterval(function() {
-                $.ajax({
-                    url: 'update.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
-                    },
-                    success: function(responses) {
-                        $('#left_container').empty();
-                        responses.forEach(function(response) {
+        // setInterval(function() {
+        //         $.ajax({
+        //             url: 'update.php',
+        //             type: 'GET',
+        //             dataType: 'json',
+        //             data: {
+        //                 "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
+        //             },
+        //             success: function(responses) {
+        //                 $('#left_container').empty();
+        //                 responses.forEach(function(response) {
 
-                            let tag = `
-                            <div class="grid-item">
-                                <div class="flex">
-                                    <i class="user fas fa-user-circle"></i>
-                                    <div class="information">
-                                        <span>姓名:${response.name}</span>
-                                        <span>學號:${response.school_number}</span>
-                                        <span>簽到時間:${response.time}</span>
-                                        <span class="${response.status == '準時' ? 'text-success' : 'text-danger'}">狀態：${response.status}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            `
-                            $('#left_container').append(tag);
-                        })
-                    }
-                })
-            },
-            5000)
+        //                     let tag = `
+        //                     <div class="grid-item">
+        //                         <div class="flex">
+        //                             <i class="user fas fa-user-circle"></i>
+        //                             <div class="information">
+        //                                 <span>姓名:${response.name}</span>
+        //                                 <span>學號:${response.school_number}</span>
+        //                                 <span>簽到時間:${response.time}</span>
+        //                                 <span class="${response.status == '準時' ? 'text-success' : 'text-danger'}">狀態：${response.status}</span>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                     `
+        //                     $('#left_container').append(tag);
+        //                 })
+        //             }
+        //         })
+        //     },
+        //     5000)
 
 
         // setInterval(function() {

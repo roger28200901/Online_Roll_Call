@@ -170,6 +170,34 @@ async function recognizeFaces() {
                         success: function(response) {
                             console.log(response)
                             person.count = 0;
+                                
+                            $.ajax({
+                                    url: 'update.php',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    data: {
+                                        "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
+                                    },
+                                    success: function(responses) {
+                                        $('#left_container').empty();
+                                        responses.forEach(function(response) {            
+                                            let tag = `
+                                                    <div class="grid-item">
+                                                        <div class="flex">
+                                                            <i class="user fas fa-user-circle"></i>
+                                                            <div class="information">
+                                                                <span>姓名:${response.name}</span>
+                                                                <span>學號:${response.school_number}</span>
+                                                                <span>簽到時間:${response.time}</span>
+                                                                <span class="${response.status == '準時' ? 'text-success' : 'text-danger'}">狀態：${response.status}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    `
+                                            $('#left_container').append(tag);
+                                        })
+                                    }
+                            })
                         }
                     })
                 }
