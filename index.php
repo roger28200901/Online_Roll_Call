@@ -148,11 +148,31 @@ if (strtotime($now) < strtotime($rollcall_time)) {
         </div>
         <div id="right-information">
             <h4 style="text-align: center; margin:15%; color:gray; border:1px solid black; padding:10%; border-radius:50%; background:white">線上簽到</h4>
-            <div style="bottom: 0; right:0; position:absolute; margin-bottom:5%; margin-right:5%;">
+            <div style="bottom: 0; right:0; position:absolute; margin-bottom:5%; margin-right:5%;" hidden>
                 <span style="text-align: right;">全班人數:80人</span>
                 <span style="text-align: right;">目前已到人數:20人</span>
             </div>
         </div>
+        <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <!-- <div class="loader"></div> -->
+                        <div clas="loader-txt">
+                            <div class="text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div>
+                                讀取人臉模組中...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </body>

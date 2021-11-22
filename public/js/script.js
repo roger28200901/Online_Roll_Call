@@ -109,6 +109,7 @@ async function recognizeFaces() {
 
     console.log('enter recognizeFaces')
     const labeledDescriptors = await loadLabeledImages()
+    $('#loadMe').modal('hide')
     console.log(labeledDescriptors)
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.3)
 
@@ -137,7 +138,7 @@ async function recognizeFaces() {
                 if (person.name == result.label) person.count += 1
                 if (person.count == 20) {
                     let now = new Date();
-
+                    let status = '';
                     if (now.getTime() >= rollcall_time.getTime() && now.getTime() <= rollcall_time_plus_delay.getTime()) {
                         status = "準時";
                     } else if (now.getTime() >= rollcall_time_plus_delay) {
@@ -173,6 +174,7 @@ async function recognizeFaces() {
 
 function loadLabeledImages() {
     const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
+    $('#loadMe').modal('show')
     return Promise.all(
         labels.map(async(label) => {
             const descriptions = []
