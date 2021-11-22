@@ -1,12 +1,29 @@
-console.log = function() {
+// console.log = function() {
 
-}
+// }
 const video = document.getElementById('videoInput')
 let rollcall_time = new Date($('[name=rollcall_time]').val())
 let rollcall_time_plus_delay = new Date($('[name=rollcall_time_plus_delay]').val())
 var mjpeg_img;
-// var labels = [] // for WebCam
-
+var labels = [] // for WebCam
+var persons = [
+    // {
+    //     "name": "陳昀鴻",
+    //     "count": 0,
+    // },
+    // {
+    //     "name":"郭芝玲",
+    //     "count" : 0,
+    // },
+    // {
+    //     "name": "李佩佳",
+    //     "count" : 0
+    // },
+    // {
+    //     "name": "李佳霖",
+    //     "count" : 0
+    // }
+]
 
 function reload_img() {
     mjpeg_img.src = "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime();
@@ -30,6 +47,21 @@ function init() {
     //         labels.push(student.name)
     //     })
     // })
+    $.ajax({
+        url: 'get_model_list.php',
+        method:'GET',
+        success: function(responses) {
+            let json = JSON.parse( responses)
+            json.forEach(function(response) {
+                labels.push(response.name);
+                let person = {
+                    "name" : response.name,
+                    "count" : 0
+                }
+                persons.push(person)
+            })
+        }
+    })
     mjpeg_img = document.getElementById("mjpeg_dest");
     // setTimeout(refreshStream, 150);
     // mjpeg_img.onload = refreshStream;
@@ -77,25 +109,7 @@ function start() {
     recognizeFaces()
 }
 
-var persons = [
-    {
-        "name": "陳昀鴻",
-        "count": 0,
-    },
-    {
-        "name":"郭芝玲",
-        "count" : 0,
-    },
-    {
-        "name": "李佩佳",
-        "count" : 0
-    },
-    {
-        "name": "李佳霖",
-        "count" : 0
-    }
 
-]
 
 
 async function recognizeFaces() {
@@ -173,7 +187,7 @@ async function recognizeFaces() {
 }
 
 function loadLabeledImages() {
-    const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
+    // const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
     $('#loadMe').modal('show')
     return Promise.all(
         labels.map(async(label) => {

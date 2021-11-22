@@ -119,7 +119,8 @@ $results = mysqli_query($mysqli, $sql);
     }
 
 
-    input {
+    input[type=text],
+    input[type=date] {
         background: #c4c4cc;
         border: none;
         border-radius: 5px;
@@ -132,6 +133,8 @@ $results = mysqli_query($mysqli, $sql);
     <div>
         <img src="images/ADD.png" id="btn_add" alt="">
         <img src="images/NEW CHECKROLL.png" id="new_checkroll" alt="">
+        <input type="button" value="點名單管理" class="btn btn-primary" style="position: absolute; left:3%; top:50%">
+        <input type="button" value="新增學生辨識" onclick="location.href='insert_student_image.php'" class="btn btn-success" style="position: absolute; left:15%; top:50%">
     </div>
     <div id="wrapper">
 
