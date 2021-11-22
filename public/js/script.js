@@ -6,6 +6,7 @@ let rollcall_time = new Date($('[name=rollcall_time]').val())
 let rollcall_time_plus_delay = new Date($('[name=rollcall_time_plus_delay]').val())
 var mjpeg_img;
 var labels = [] // for WebCam
+var labelsFiles = []
 var persons = [
     // {
     //     "name": "陳昀鴻",
@@ -60,6 +61,18 @@ function init() {
                 }
                 persons.push(person)
             })
+        }
+    })
+    $.ajax({
+        url: 'get_model_files.php',
+        method: 'GET',
+        success: function(responses) {
+            let json = JSON.parse(responses);
+            json.forEach(function(object) {
+                labelsFiles.push(object)
+            })
+            console.log(labels,labelsFiles)
+
         }
     })
     mjpeg_img = document.getElementById("mjpeg_dest");
@@ -218,14 +231,37 @@ function loadLabeledImages() {
     // const labels = ['郭芝玲','李佩佳','陳昀鴻','李佳霖']
     $('#loadMe').modal('show')
     return Promise.all(
-        labels.map(async(label) => {
+        labels.map(async(label,index) => {
             const descriptions = []
-            for (let i = 1; i <= 2; i++) {
-                if (UrlExists(`public/labeled_images/${label}/${i}.jpg`) == false) break;
-                const img = await faceapi.fetchImage(`public/labeled_images/${label}/${i}.jpg`)
-                const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                descriptions.push(detections.descriptor)
+            // console.log(index)
+            
+            // labelsFiles.forEach(function (item) {
+            //     if (item.name == label) {
+            //         item.images.forEach(element => {
+            //             console.log(item.name + element)
+            //             // if (UrlExists(`public/labeled_images/${label}/${element}.jpg`) == false) break;
+            //             console.log(`public/labeled_images/${label}/${element}`);
+            //             // const img = await faceapi.fetchImage(`public/labeled_images/${label}/${element}`)
+            //             // const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+            //             // descriptions.push(detections.descriptor)
+            //         });
+            //     }                
+            // })
+            for(let i = 0; i< labelsFiles.length; i++) {
+                if (labelsFiles[i].name == label) {
+                    for (let j =0 ; j< labelsFiles[i].images.length; j++) {
+                        const img = await faceapi.fetchImage(`public/labeled_images/${label}/${labelsFiles[i].images[j]}`)
+                        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+                        descriptions.push(detections.descriptor)
+                    }
+                }
             }
+            // for (let i = 1; i <= 2; i++) {
+            //     if (UrlExists(`public/labeled_images/${label}/${i}.jpg`) == false) break;
+            //     const img = await faceapi.fetchImage(`public/labeled_images/${label}/${i}.jpg`)
+            //     const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+            //     descriptions.push(detections.descriptor)
+            // }
             // document.body.append(label + ' Faces Loaded | ')
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
