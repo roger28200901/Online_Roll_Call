@@ -170,7 +170,7 @@ async function recognizeFaces() {
                 if (person.name == result.label) person.count += 1
                 if (person.count == 20) {
                     let now = new Date();
-                    let status = '';
+                    let status = '準時';
                     if (now.getTime() >= rollcall_time.getTime() && now.getTime() <= rollcall_time_plus_delay.getTime()) {
                         status = "準時";
                     } else if (now.getTime() >= rollcall_time_plus_delay) {

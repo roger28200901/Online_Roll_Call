@@ -12,7 +12,6 @@ $result = mysqli_query($mysqli, $prepare);
 
 if (mysqli_num_rows($result)) {
     echo "資料已存在";
-    return;
 }
 $serch_number_sql = "SELECT * FROM `users` WHERE `name` = '$name'";
 $result = mysqli_query($mysqli, $serch_number_sql);
