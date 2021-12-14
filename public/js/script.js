@@ -7,24 +7,7 @@ let rollcall_time_plus_delay = new Date($('[name=rollcall_time_plus_delay]').val
 var mjpeg_img;
 var labels = [] // for WebCam
 var labelsFiles = []
-var persons = [
-    // {
-    //     "name": "陳昀鴻",
-    //     "count": 0,
-    // },
-    // {
-    //     "name":"郭芝玲",
-    //     "count" : 0,
-    // },
-    // {
-    //     "name": "李佩佳",
-    //     "count" : 0
-    // },
-    // {
-    //     "name": "李佳霖",
-    //     "count" : 0
-    // }
-]
+var persons = []
 
 function reload_img() {
     mjpeg_img.src = "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime();
