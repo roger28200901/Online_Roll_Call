@@ -200,6 +200,8 @@ async function recognizeFaces() {
                                                     `
                                         $('#left_container').append(tag);
                                     })
+                                    var audio = new Audio("output.mp3");
+                                    audio.play();
                                     $('#count_people').html('目前已到人數:' + count + '人')
                                 }
                             })

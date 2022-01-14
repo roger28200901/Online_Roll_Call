@@ -1,8 +1,8 @@
 <?php
 include('connection.php');
-// if ($_SESSION['login'] == false) {
-//     header("Location:login.php");
-// }
+if ($_SESSION['login'] == false) {
+    header("Location:login.php");
+}
 $id = $_GET['id'];
 $sql = "SELECT * FROM `rollcalls` WHERE `id` = $id";
 

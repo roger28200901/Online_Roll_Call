@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <link rel="stylesheet " href="./backend.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARDS</title>
+
+</head>
+
+
+<body>
+    <div class="flex">
+        <div class="sidebar">
+            <div class="logo_content">
+                <div class="logo">
+                    <div class="logo_name">NTUT Roll call system</div>
+                </div>
+                <i class='bx bx-menu bx-sm' id="btn"></i>
+            </div>
+            <ul class="nav_list">
+
+                <li>
+                    <a href="#">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="search...">
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class='bx bx-user-pin bx-flip-horizontal bx-tada bx-sm'></i>
+                        <span class="link_name">User</span>
+                    </a>
+                    <span class="tooltip">holle 你懂中文嗎</span>
+
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-chat bx-tada bx-sm'></i>
+                        <span class="link_name">Messages</span>
+                    </a>
+                    <span class="tooltip">super cute 的你</span>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-cog bx-tada bx-sm'></i>
+                        <span class="link_name">Maneger</span>
+                    </a>
+                    <span class="tooltip">Doctor Strange 奇異果博士</span>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class='bx bx-log-out-circle bx-tada bx-sm'></i>
+                        <span class="link_name">Sign out</span>
+                    </a>
+                    <span class="tooltip">sunny day 出去玩</span>
+                </li>
+
+
+            </ul>
+
+            <!-- <div class="home_content">
+                <div class="text">HOME!!!!!!</div>
+            </div> -->
+
+
+        </div>
+
+        <div class="container scrollbar">
+
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="box">
+                    <div class="content">
+                        <h2>2021.10.13</h2>
+                        <a href="#">GO</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu">
+        <div class="toggle">
+            <ion-icon name="add-outline"></ion-icon>
+        </div>
+        <li style="--i:0;">
+            <a href="#"></a>
+        </li>
+
+        <li style="--i:1;">
+            <a href="#">
+                <ion-icon name="person-add-outline"></ion-icon>
+            </a>
+        </li>
+
+        <li style="--i:2;">
+            <a href="#">
+                <ion-icon name="clipboard-outline"></ion-icon>
+            </a>
+        </li>
+    </div>
+
+    <div>
+        <botton type="">12311 程式設計</botton>
+    </div>
+
+
+    <script src="js/jquery.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+    <script>
+        let btn = document.querySelector("#btn");
+        let sidebar = document.querySelector(".sidebar");
+        let searchBtn = document.querySelector(".bx-search");
+        let container = document.querySelector(".container");
+
+        btn.onclick = function () {
+            sidebar.classList.toggle('active');
+            container.classList.toggle('active');
+        }
+        searchBtn.onclick = function () {
+            sidebar.onclick.toggle('active');
+        }
+
+
+
+        /*
+        let toggle = document.querySelector('.toggle');…
+        let menu = document.querySelector('.menu');
+        toggle.onclick = function(){
+            menu.classList.toggle('active')
+        }
+        */
+
+
+        $(document).ready(function () {
+            $('.container').on('wheel', function (ev) {
+                let y = parseInt(ev.originalEvent.deltaY);
+                console.log(y)
+                if (y)
+                    this.scrollLeft += y;
+                console.log(y, this.scrollLeft);
+            });
+        })
+
+    </script>
+
+
+</body>
+
+
+
+</html>

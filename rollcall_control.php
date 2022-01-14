@@ -4,65 +4,72 @@ $sql = "SELECT * FROM `rollcalls`";
 $results = mysqli_query($mysqli, $sql);
 ?>
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>點名單管理</title>
-    <!-- Font Awesome js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maneger</title>
+<meta charset="utf-8">
 
-    <!-- Our project just needs Font Awesome solid + brand -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script defer src="js/brands.js"></script>
-    <script defer src="js/solid.js"></script>
-    <script defer src="js/fontawesome.js"></script>
+<!-- Jquery and Popper Bootstrap js -->
+<script src="js/jquery.js"></script>
+<!-- <script src="js/popper.js"></script> -->
+<link rel="stylesheet " href="./rollcall_control.css">
+<link href="https://fonts.googleapis.com/css2?family=Cutive&display=swap" rel="stylesheet">
 
-    <!-- Jquery and Popper Bootstrap js -->
-    <script src="js/jquery.js"></script>
-    <!-- <script src="js/popper.js"></script> -->
-    <script src="js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
-    <center>
-        <h1>點名單管理</h1>
-        <input type="button" value="返回上一頁" class="btn btn-danger" onclick="location.href='backend.php'">
-        <hr>
-        <table class="table table-hover table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">課程名稱</th>
-                    <th scope="col">日期</th>
-                    <th scope="col">點名時間</th>
-                    <th scope="col">遲到時間</th>
-                    <th scope="col">控制</th>
-                </tr>
-            </thead>
-            <tbody>
+
+    <div class="row">
+        <div class="col">
+            <img onclick="history.back()" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAAAXNSR0IArs4c6QAAAQtJREFUaEPt19ENwjAMBNDrBqzABLARsBlMAiMwAiN0BGSp+YmUqo7PbiO533H6ek2dZsKA1zSgGYmOemuZdCa9kkAuj1weuTz0a+AEYNaXtSu8P0QBvwF8ATxYcE90AV8X7JMF90LX4BKypC140+WBboFfAO4m7VLMRruDxc1Eh4CZ6DAwCx0KZqDDwVb0LmArWvrtrWphPwBnRltbm8PSPSTpD4BLdQPazteCW9Ay5y5wK3oXOAMdDmehQ+FMdBicjQ6Be6DX4If9ny7ttW6Hh/2frveDApczIuUAYN3Gt+7Ww53Gtz6YapzXh6hCaAcnWptY7/hMujc5bV0mrU2sd3wm3Zuctm7IpP/vyiwuzvoH7AAAAABJRU5ErkJggg==" class="logo">
+            <h1>點名單管理</h1>
+            <p>NTUT Roll call system manerger</p>
+            <div style="display: flex;">
+                <div style="margin-top:27px;">
+                    選擇課程：
+                </div>
+                <div>
+                    <select name="" id="">
+                        <option value="">Coding</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="container">
                 <?php
                 while ($row = mysqli_fetch_array($results)) {
                 ?>
-                    <tr>
-                        <th scope="row"><?= $row['id'] ?></th>
-                        <td><?= $row['class_name'] ?></td>
-                        <td><?= $row['date'] ?></td>
-                        <td><?= $row['time'] ?></td>
-                        <td><?= $row['delay'] ?></td>
-                        <td>
-                            <input type="button" onclick="location.href='rollcall_list.php?id=<?= $row['id'] ?>'" value="查看內容" class="btn btn-primary">
-                            <input type="button" onclick="deleteItem(<?= $row['id'] ?>)" value="刪除" class="btn btn-danger">
-                        </td>
-                    </tr>
+                    <div class="data-row">
+                        <div onclick="location.href='rollcall_list.php?id=<?= $row['id'] ?>'" class="card">
+                            <h2><?= $row['date'] ?></h2>
+                            <h2><?= $row['class_name'] ?></h2>
+                            <h2><?= $orw['class_name'] ?></h2>
+                            <p>點名時間：<?= $row['time'] ?><br>遲到時間：<?= $row['delay'] ?>分鐘</p>
+
+
+                        </div>
+                        <div onclick="deleteItem(<?= $row['id'] ?>)" value="刪除" class="trash">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAAAXNSR0IArs4c6QAAAYBJREFUaEPtmeFRwzAMhb9OACOwATABMAkwAWwAbAATAJMAEwAbMEKZAO5xzZ2bOJHtum57SHf5FVt5eXqWZXnGDtpsBzHzb0HvA4cZEfsE5hnjB0NrMP0CnGaAeAXOMsZXB30PXBUAeACuC+b9TVmF6QvgsfTDwCXwVDJ/DPQBcG44FFPSc6lJ14rUlL0BktOSjYGWRqXVTdsdcOugG4Qhi2lp9agBKOsTX4CeJE1bzjb6PjXlKb1Z2aTGj2i3NPN3Kmit4JsaqBJSnLm7OugKkdBm4kzHNC1mOrNK1H5JehKJTBOmwzVhbf0qR8M64sdBRxgYS3nONOCadnks1oxnj9hu7PJweUxUaS4Pl4fLY8jA1pSm4dFIfZKp3pxO2R/Bvwx6dK0KpgrHwiUXTaq82qCfAfVYJm3bWgjR3l1pW0x6fbcYqPD+uKf7qMtUpjVZYdNC26sAru/ie9EOS7oZyAHdfUisr3ID0AesG4Ewq5iclIA2na57gINeN8Od/19m6IUu1S6g2QAAAABJRU5ErkJggg==" />
+                        </div>
+                    </div>
                 <?php
                 }
                 ?>
-            </tbody>
-        </table>
-    </center>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+
+
+
+
 </body>
 <script>
     function deleteItem(id) {
