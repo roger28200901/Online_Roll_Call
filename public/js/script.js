@@ -8,7 +8,6 @@ var mjpeg_img;
 var labels = [] // for WebCam
 var labelsFiles = []
 var persons = []
-
 function reload_img() {
     mjpeg_img.src = "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime();
 }
@@ -200,9 +199,27 @@ async function recognizeFaces() {
                                                     `
                                         $('#left_container').append(tag);
                                     })
+                                    $('#toast-content').html(person.name +" 辨識成功 "+ " 狀態：" + status )
+                                    // TODO:fix 
                                     var audio = new Audio("output.mp3");
-                                    audio.play();
+                                                                        
+                                    const videoPromise = video.play();
+
+                                        if (videoPromise !== undefined) {
+                                        playPromise.then(() => {
+                                                // Automatic playback started!
+                                                // Show playing UI.
+                                                $('.toast').toast('show');
+
+                                            })
+                                            .catch(error => {
+                                                // Auto-play was prevented
+                                                // Show paused UI.
+                                            });
+                                        }
                                     $('#count_people').html('目前已到人數:' + count + '人')
+
+
                                 }
                             })
                         }

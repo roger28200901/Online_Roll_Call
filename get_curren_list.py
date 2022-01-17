@@ -14,10 +14,8 @@ while True:
         cur.execute('SELECT * FROM `students` ORDER BY `students`.`time` DESC')
 
         row = cur.fetchone()
-        print(row[2])
         # id rollcalls_id name
-            
-            # print(f'{row[0]} {row[1]} {row[2]}')
+        # print(f'{row[0]} {row[1]} {row[2]}')
         if (name == "" or name != row[2]):
             name = row[2]
             # Instantiates a client

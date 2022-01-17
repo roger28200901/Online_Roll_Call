@@ -133,6 +133,21 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                 </button>
             </div>
         </nav>
+        <!-- Toast  -->
+        <!-- <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> -->
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">提示</strong>
+                    <small>1 sec ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div id="toast-content" style="color:green;" class="toast-body">
+                    陳昀鴻辨識成功
+                </div>
+            </div>
+        </div>
         <!-- Content -->
         <div id="content">
             <div id="video" class="card">
@@ -184,6 +199,8 @@ if (strtotime($now) < strtotime($rollcall_time)) {
         $('#sidebarCollapse').on('click', function() {
             $('#sidebar').toggleClass('active');
         });
+        // $('.toast').toast('show');
+
         $(window).resize(function() {
             if ($(window).width() < 768) {
                 $('#sidebar').hide();
