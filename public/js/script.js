@@ -1,13 +1,14 @@
 // console.log = function() {
 
 // }
-const video = document.getElementById('videoInput')
+// const video = document.getElementById('videoInput')
 let rollcall_time = new Date($('[name=rollcall_time]').val())
 let rollcall_time_plus_delay = new Date($('[name=rollcall_time_plus_delay]').val())
 var mjpeg_img;
 var labels = [] // for WebCam
 var labelsFiles = []
 var persons = []
+var audio = null
 function reload_img() {
     mjpeg_img.src = "http://172.20.10.2/cam_pic.php?time=" + new Date().getTime();
 }
@@ -68,7 +69,8 @@ function init() {
     // console.log(loadImage());
     // mjpeg_img.onerror = error_img;
     // reload_img();
-    loadImage()
+    // loadImage()
+    // loadImageByLocal();
 }
 
 function loadImage(url) {
@@ -106,40 +108,63 @@ Promise.all([
 
 function start() {
     document.body.append('Models Loaded')
+    
+    var constraints = { audio: false, video: true }; 
+
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(mediaStream) {
+      var video = document.querySelector('video');
+      video.srcObject = mediaStream;
+      video.onloadedmetadata = function(e) {
+        video.play();
+      };
+    })
+    .catch(function(err) { console.log(err.name + ": " + err.message); });
+    
+    
+    //video.src = '../videos/speech.mp4'
+    console.log('video added')
+
     recognizeFaces()
 }
 
-
+// Delay function 
+function syncDelay(milliseconds){
+    var start = new Date().getTime();
+    var end=0;
+    while( (end-start) < milliseconds){
+        end = new Date().getTime();
+    }
+   }
 
 
 async function recognizeFaces() {
 
-    const input = document.getElementById('mjpeg_dest')
+    const input = document.getElementById('videoInput')
 
     const canvas = document.getElementById('overlay')
-
-    const displaySize = { width: input.width, height: input.height }
+    console.log(canvas.width, canvas.height)
+    const displaySize = { width: 640, height: 480 }
     faceapi.matchDimensions(canvas, displaySize)
 
     console.log('enter recognizeFaces')
     const labeledDescriptors = await loadLabeledImages()
     $('#loadMe').modal('hide')
     console.log(labeledDescriptors)
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6)
+    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5)
 
     setInterval(async() => {
         const options = new faceapi.SsdMobilenetv1Options({ minConfidence: 0.38 })
-        await refreshStream();
+        // await refreshStream();
         const detections = await faceapi.detectAllFaces(input, options).withFaceLandmarks().withFaceDescriptors()
-
         // resize the detected boxes in case your displayed image has a different size then the original
-        const resizedDetections = faceapi.resizeResults(detections, { width: input.width, height: input.height })
+        const resizedDetections = faceapi.resizeResults(detections, { width: 640, height: 480 })
 
         // draw them into a canvas
         // const canvas = document.getElementById('overlay')
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        canvas.width = input.width
-        canvas.height = input.height
+        canvas.width = 640
+        canvas.height = 480
             // faceapi.drawDetection(canvas, resizedDetections, { withScore: true })
             // console.log(resizedDetections);
         const results = resizedDetections.map((d) => {
@@ -147,15 +172,16 @@ async function recognizeFaces() {
         })
 
         results.forEach((result, i) => {
-
+            // console.log(result)
             persons.forEach(function(person) {
                 if (person.name == result.label) person.count += 1
                 if (person.count == 20) {
                     let now = new Date();
                     let status = '準時';
+                    console.log(now.getTime() >= rollcall_time_plus_delay.getTime(), now.getTime(), rollcall_time_plus_delay.getTime())
                     if (now.getTime() >= rollcall_time.getTime() && now.getTime() <= rollcall_time_plus_delay.getTime()) {
                         status = "準時";
-                    } else if (now.getTime() >= rollcall_time_plus_delay) {
+                    } else if (now.getTime() >= rollcall_time_plus_delay.getTime()) {
                         status = "遲到";
                     }
                     console.log(person.count)
@@ -171,6 +197,19 @@ async function recognizeFaces() {
                         },
                         success: function(response) {
                             console.log(response)
+                            if (response != "資料已存在") {
+                                syncDelay(3000)
+                                audio = new Audio("output.mp3");
+                                audio.load();            
+                                const audioPromise = audio.play();
+
+                                    if (audioPromise !== undefined) {
+                                            // Automatic playback started!
+                                            // Show playing UI.
+                                        $('.toast').toast('show');
+                                       
+                                    }
+                            }
                             person.count = 0;
                             let count = 0;
                             $.ajax({
@@ -181,6 +220,7 @@ async function recognizeFaces() {
                                     "rollcall_time": $('[name=rollcall_time]').val().split(' ')[0]
                                 },
                                 success: function(responses) {
+                                    console.log("refresh left")
                                     $('#left_container').empty();
                                     responses.forEach(function(response) {
                                         count += 1;
@@ -199,24 +239,14 @@ async function recognizeFaces() {
                                                     `
                                         $('#left_container').append(tag);
                                     })
+                                    if (status == "準時") {
+                                        $('#toast-content').css('color','green')    
+                                    } else {
+                                        $('#toast-content').css('color','red')
+                                    }
                                     $('#toast-content').html(person.name +" 辨識成功 "+ " 狀態：" + status )
                                     // TODO:fix 
-                                    var audio = new Audio("output.mp3");
-                                                                        
-                                    const videoPromise = video.play();
-
-                                        if (videoPromise !== undefined) {
-                                        playPromise.then(() => {
-                                                // Automatic playback started!
-                                                // Show playing UI.
-                                                $('.toast').toast('show');
-
-                                            })
-                                            .catch(error => {
-                                                // Auto-play was prevented
-                                                // Show paused UI.
-                                            });
-                                        }
+                                    
                                     $('#count_people').html('目前已到人數:' + count + '人')
 
 

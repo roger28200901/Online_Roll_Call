@@ -16,6 +16,10 @@ while True:
         row = cur.fetchone()
         # id rollcalls_id name
         # print(f'{row[0]} {row[1]} {row[2]}')
+        if row == None:
+            name == ""
+            continue
+        
         if (name == "" or name != row[2]):
             name = row[2]
             # Instantiates a client
@@ -46,7 +50,7 @@ while True:
                 # Write the response to the output file.
                 out.write(response.audio_content)
                 # print('Audio content written to file "output.mp3"')
-            print(name)
+                print(name)
         elif (name == row[2]):
             continue
     cur.close()

@@ -14,6 +14,7 @@ $row = mysqli_fetch_array($result);
 $now = date('Y/m/d H:i:s');
 $rollcall_time = $row['date'] . " " . $row['time'];
 $rollcall_time_plus_delay = date("Y-m-d H:i", strtotime($rollcall_time . '+' . $row['delay'] . 'minute'));
+
 //如果現在時間還沒到點名時間 則不會啟動點名的功能
 $rollcall_function = false;
 if (strtotime($now) < strtotime($rollcall_time)) {
@@ -52,7 +53,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
     <script src="script_min.js"></script>
 </head>
 
-<body onload="setTimeout('init();', 100);">
+<body onload="setTimeout(init(),100)">
     <input type="hidden" name="rollcall_id" value="<?= $id ?>">
     <input type="hidden" name="rollcall_time" value="<?= $rollcall_time ?>">
     <input type="hidden" name="rollcall_time_plus_delay" value="<?= $rollcall_time_plus_delay ?>">
@@ -93,7 +94,7 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                                     <span>姓名:<?= $row2['name'] ?></span>
                                     <span>學號:<?= $row2['school_number'] ?></span>
                                     <span>簽到時間:<?= $row2['time'] ?></span>
-                                    <span class="<?= $row['status'] == '準時' ? 'text-success' : 'text-danger' ?>">狀態：<?= $row2['status'] ?></span>
+                                    <span class="<?= $row2['status'] == '準時' ? 'text-success' : 'text-danger' ?>">狀態：<?= $row2['status'] ?></span>
                                 </div>
                             </div>
                         </div>
@@ -155,8 +156,9 @@ if (strtotime($now) < strtotime($rollcall_time)) {
                     <h5 class="card-title">攝影畫面</h5>
                     <p class="card-text" style="height: 500px;">
                         <!-- <img style="width: 90%; position:absolute" id="mjpeg_dest" crossorigin='anonymous' /> -->
-                        <img style="width: 90%; position:absolute" id="mjpeg_dest" crossorigin='anonymous' />
+                        <!-- <img style="width: 90%; position:absolute" id="mjpeg_dest" crossorigin='anonymous' /> -->
                         <canvas style="position: absolute;" id="overlay">test</canvas>
+                        <video autoplay id="videoInput"></video>
                         <!-- <img id="stream" src="image.png" width="500" height="500" alt=""> -->
                     </p>
                     <small class="text-muted">Author: Chen Yun Hong</small>
@@ -195,6 +197,20 @@ if (strtotime($now) < strtotime($rollcall_time)) {
 </body>
 <script>
     $(document).ready(function() {
+
+        // const constraints = {
+        //     video: true,
+        // };
+
+        // const video = document.querySelector("video");
+
+        // const canvas = document.createElement("canvas");
+
+        // navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        //     video.srcObject = stream;
+
+        // });
+
 
         $('#sidebarCollapse').on('click', function() {
             $('#sidebar').toggleClass('active');
