@@ -199,7 +199,7 @@ async function recognizeFaces() {
                             console.log(response)
                             if (response != "資料已存在") {
                                 syncDelay(3000)
-                                audio = new Audio("output.mp3");
+                                audio = new Audio("output.mp3" + '?noCache=' + Math.floor(Math.random() * 1000000));
                                 audio.load();            
                                 const audioPromise = audio.play();
 
